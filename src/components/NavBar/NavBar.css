@@ -1,12 +1,25 @@
 .nav-bar {
   position: fixed;
   z-index: 5;
-  background-color: rgba(0, 0, 0, .5);
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  visibility: hidden;
+  transform: translateX(100vw);
+  transition: transform .2s linear;
+}
+
+.nav-bar__overlay {
+  transition: background-color .2s linear;
+}
+
+.nav-bar__overlay_opened {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .3);
 }
 
 .nav-bar__container {
@@ -21,7 +34,7 @@
 }
 
 .nav-bar_opened {
-  visibility: visible;
+  transform: translateX(0);
 }
 
 .nav-bar__close-button {
@@ -155,7 +168,6 @@
     z-index: 5;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, .3);
     top: 0;
     left: 0;
     right: 0;
