@@ -1,0 +1,23 @@
+.title-section {
+  background-color: inherit;
+  color: black;
+  min-height: 50px;
+  border-bottom: solid 1px black;
+  width: 100%;
+}
+
+.title-section__text {
+  text-align: start;
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+}
+
+@media (min-width: 767px) {
+  .title-section__text {
+    font-size: 22px;
+    line-height: 27px;
+  }
+}
