@@ -1,0 +1,29 @@
+.portfolio {
+  padding: 0 14px 50px;
+}
+
+.portfolio__title {
+  margin: 0 0 20px;
+  color: #A0A0A0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (min-width: 767px) {
+  .portfolio {
+    padding: 0 50px 70px;
+  }
+
+  .portfolio__title {
+    margin: 0 0 30px;
+    font-size: 18px;
+    line-height: 20px;
+  }
+}
+
+@media (min-width: 1023px) {
+  .portfolio {
+    padding: 0 70px 105px;
+  }
+}

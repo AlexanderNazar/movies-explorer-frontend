@@ -1,0 +1,150 @@
+.about-me {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  color: black;
+  padding: 70px 14px;
+}
+
+.about-me__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 60px 0 0;
+}
+
+.about-me__photo {
+  align-self: center;
+  width: 292px;
+  height: 352px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.about-me__name {
+  margin: 0 0 20px;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: -0.04em;
+}
+
+.about-me__speciality {
+  margin: 0 0 20px;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.about-me__description {
+  margin: 0 0 40px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.about-me__link-git {
+  width: max-content;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  transition: opacity .1s linear;
+}
+
+.about-me__link-git:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+.about-me__link-git:active {
+  opacity: 1;
+}
+
+@media (min-width: 767px) {
+  .about-me {
+    padding: 90px 50px;
+  }
+
+  .about-me__card {
+    display: grid;
+    justify-items: stretch;
+    grid-template-columns: 1fr 255px;
+    grid-template-rows: repeat(4, max-content);
+    column-gap: 49px;
+    padding: 66px 0 0;
+  }
+
+  .about-me__photo {
+    grid-row: 1/5;
+    grid-column: 2/3;
+    margin: 0;
+    width: 255px;
+    height: 307px;
+  }
+
+  .about-me__name {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    margin: 0 0 16px;
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .about-me__speciality {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__description {
+    grid-row: 3/4;
+    grid-column: 1/2;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__link-git {
+    grid-row: 4/5;
+    grid-column: 1/2;
+    align-self: end;
+  }
+}
+
+@media (min-width: 1023px) {
+  .about-me {
+    padding: 110px 70px 100px;
+  }
+
+  .about-me__card {
+    grid-template-columns: 1fr 270px;
+    column-gap: 270px;
+  }
+
+  .about-me__photo {
+    width: 270px;
+    height: 327px;
+  }
+
+  .about-me__name {
+    margin: 0 0 18px;
+    font-size: 50px;
+    line-height: 58px;
+  }
+
+  .about-me__speciality {
+    margin: 0 0 26px;
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .about-me__description {
+    font-size: 14px;
+    line-height: 22px;
+  }
+}

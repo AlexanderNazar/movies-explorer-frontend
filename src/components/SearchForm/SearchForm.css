@@ -1,0 +1,138 @@
+.search {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 10px 10px;
+  min-height: 226px;
+}
+
+.search__form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search__string {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 45px;
+  width: 100%;
+  height: 48px;
+  border: 1.5px solid rgba(170, 170, 170, .2);
+  border-radius: 50px;;
+}
+
+.search__input {
+  box-sizing: border-box;
+  width: 75%;
+  height: 100%;
+  border: 0;
+  padding: 15px 0 15px 16px;
+  background-color: transparent;
+}
+
+.search__input:focus {
+  outline: none;
+}
+
+.search__input::placeholder {
+  color:#A0A0A0;
+}
+
+.search__input::-webkit-input-placeholder {
+  color:#A0A0A0;
+}
+
+.search__input::-moz-placeholder {
+  color:#A0A0A0;
+}
+
+.search__input::-ms-input-placeholder {
+  color:#A0A0A0;
+}
+
+.search__button {
+  width: 59px;
+  height: 34px;
+  margin: 7px;
+  padding: 0;
+  background-color: #3456F3;
+  border-radius: 48px;
+  border: none;
+  color: white;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 18px;
+  transition: opacity .1s linear;
+}
+
+.search__button:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.search__button:active {
+  opacity: 1;
+}
+
+.search__line {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0;
+  padding: 0 4px;
+  color: #AAA;
+}
+
+@media (min-width: 767px) {
+  .search {
+    min-height: 232px;
+    padding: 60px 30px 10px;
+  }
+
+  .search__string {
+    margin: 0 0 38px;
+    height: 48px;
+  }
+
+  .search__input {
+    width: 90%;
+    padding: 15px 0 15px 18px;
+  }
+
+  .search__line {
+    padding: 0;
+  }
+}
+
+@media (min-width: 1023px) {
+  .search {
+    min-height: 222px;
+    padding: 80px 70px 10px;
+  }
+
+  .search__form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 70px;
+  }
+
+  .search__string {
+    margin: 0 41px 0 0;
+  }
+
+  .search__input {
+    width: 90%;
+    padding: 15px 0 15px 22px;
+  }
+}
