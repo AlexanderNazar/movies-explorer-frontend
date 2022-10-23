@@ -1,38 +1,66 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './Profile.css';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import useForm from '../../hooks/useForm';
 
-function Profile({ onLoggedIn }) {
+function Profile({ logout, resStatus, setResStatus, onEditProfile }) {
 
   const history = useHistory();
 
-  const [name, setName] = useState('Александр');
-  const [email, setEmail] = useState('naa@oplot48.ru');
+  const currentUser = useContext(CurrentUserContext);
+
   const [onEdit, setOnEdit] = useState(false);
 
-  function handleChangeName(evt) {
-    setName(evt.target.value);
-  }
-
-  function handleChangeEmail(evt) {
-    setEmail(evt.target.value);
-  }
+  const {
+    values,
+    setValues,
+    isValid,
+    isValidForm,
+    handleChange,
+  } = useForm();
 
   function handleEditAccount() {
     setOnEdit(!onEdit);
   }
 
+  function handleSubmit() {
+    setOnEdit(false);
+    onEditProfile(values);
+  }
+
   function handleExitAccount() {
-    onLoggedIn();
+    logout();
     history.push('/');
   }
 
+  useEffect(() => {
+    setResStatus();
+    setValues(currentUser);
+  }, [])
+
+  const validTextName = !isValid.name && "Введен недопустимый символ для имени";
+  const validTextEmail = !isValid.email && "Здесь должен быть E-mail";
+
+  const conditionInactiveStyle = (currentUser.name === values.name && currentUser.email === values.email) || !isValidForm;
+
+  const classButton = `profile__button-save ${conditionInactiveStyle && "profile__button-save_inactive"}`;
+  const classTextResponse = `profile__text-response ${resStatus === 200 && "profile__text-response_green"}`;
+
+  const successfulText = resStatus === 200 && "Данные пользователя обновлены";
+  const errorTextConflict = resStatus === 409 && "Пользователь с таким email уже существует";
+  const errorTextBadRequest = resStatus === 400 && "При регистрации пользователя произошла ошибка";
+  const errorTextInternalServer = resStatus === 500 && "На сервере произошла ошибка";
+  const textResponse = errorTextConflict || errorTextInternalServer || successfulText || errorTextBadRequest;
+
 return (
   <section className="profile">
-    <h2 className="profile__title">Привет, Александр!</h2>
+    <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
     { onEdit ?
       <>
-        <form  className="profile__form">
+        <form className="profile__form">
+          <span id="name-error" className="profile__text-error profile__text-error_top">{validTextName}</span>
           <div className="profile__input-cotainer">
             <label htmlFor="name" className="profile__input-label">Имя</label>
               <input
@@ -40,10 +68,11 @@ return (
                 type="text"
                 name="name"
                 id="name"
-                value={name || ''}
-                onChange={handleChangeName}
-                placeholder="Имя"
-                minLength="2" />
+                value={values.name || ''}
+                pattern="[a-zA-Zа-яёА-Я0-9\s\-]*"
+                required
+                onChange={handleChange}
+                placeholder="Имя" />
           </div>
           <div className="profile__input-cotainer">
             <label htmlFor="email" className="profile__input-label">E-mail</label>
@@ -52,21 +81,30 @@ return (
                 type="email"
                 name="email"
                 id="email"
-                value={email || ''}
-                onChange={handleChangeEmail}
+                value={values.email || ''}
+                required
+                onChange={handleChange}
                 placeholder="E-mail" />
           </div>
+          <span id="email-error" className="profile__text-error profile__text-error_bottom">{validTextEmail}</span>
           <button
             type="submit"
             name="save"
-            onClick={handleEditAccount}
-            className="profile__button-save">Сохранить
+            onClick={handleSubmit}
+            className={classButton}
+            disabled={conditionInactiveStyle}>
+              { conditionInactiveStyle && <button
+              type="button"
+              className="profile__button-back"
+              onClick={handleEditAccount}>← Назад</button> }
+              Сохранить
           </button>
         </form>
       </>
       :
       <>
-        <form  className="profile__form">
+        <form className="profile__form">
+          <span id="name-error" className="profile__text-error profile__text-error_top"></span>
           <div className="profile__input-cotainer">
             <label htmlFor="name" className="profile__input-label">Имя</label>
               <input
@@ -74,10 +112,8 @@ return (
                 type="text"
                 name="name"
                 id="name"
-                value={name || ''}
-                onChange={handleChangeName}
+                value={values.name || ''}
                 placeholder="Имя"
-                minLength="2"
                 disabled />
           </div>
           <div className="profile__input-cotainer">
@@ -87,24 +123,25 @@ return (
                 type="email"
                 name="email"
                 id="email"
-                value={email || ''}
-                onChange={handleChangeEmail}
+                value={values.email || ''}
                 placeholder="E-mail"
                 disabled />
           </div>
+          <span id="email-error" className="profile__text-error profile__text-error_bottom"></span>
+          <span className={classTextResponse}>{textResponse}</span>
+          <button
+            type="button"
+            name="edit"
+            onClick={handleEditAccount}
+            className="profile__button-edit">Редактировать
+          </button>
+          <button
+            type="button"
+            name="exit"
+            onClick={handleExitAccount}
+            className="profile__button-exit">Выйти из аккаунта
+          </button>
         </form>
-        <button
-          type="button"
-          name="edit"
-          onClick={handleEditAccount}
-          className="profile__button-edit">Редактировать
-        </button>
-        <button
-          type="button"
-          name="exit"
-          onClick={handleExitAccount}
-          className="profile__button-exit">Выйти из аккаунта
-        </button>
       </>
     }
 </section>

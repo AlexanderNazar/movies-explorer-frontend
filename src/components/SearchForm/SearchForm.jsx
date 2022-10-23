@@ -10,7 +10,8 @@ return (
         <input
           type="text"
           className="search__input"
-          placeholder="Фильм" />
+          placeholder="Фильм"
+          required />
         <button type="submit" className="search__button">Найти</button>
       </div>
       <FilterCheckbox />

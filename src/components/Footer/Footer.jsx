@@ -9,7 +9,7 @@ return (
       <a href="https://practicum.yandex.ru/" className="footer__link" target="_blank" rel="noreferrer">Яндекс.Практикум</a>
       <a href="https://github.com/AlexanderNazar" className="footer__link" target="_blank" rel="noreferrer">Github</a>
     </nav>
-    <p className="footer__year">©2020</p>
+    <p className="footer__year">©2022</p>
   </section>
   );
 }

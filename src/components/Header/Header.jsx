@@ -1,4 +1,4 @@
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import NavAuth from "./NavAuth/NavAuth";
 import logo from '../../images/logo.svg';
 import MediaQuery from 'react-responsive'
@@ -7,12 +7,12 @@ import Navigation from '../Navigation/Navigation';
 
 function Header({ isLoggedIn, onOpenNavBar }) {
 
-  const { path } = useRouteMatch();
+  const { pathname } = useLocation();
 
-  const styleHeader = path === '/' ? "header" : "header header_white";
+  const styleHeader = pathname === '/' ? "header" : "header header_white";
   const navFromLoggedIn = isLoggedIn ? <Navigation /> : <NavAuth />;
   const navFromLoggedInHomePage = isLoggedIn ? <button className="header__nav header__nav_white" onClick={onOpenNavBar}/> : <NavAuth />;
-  const navFromLoggedInAndSize = path === '/' ? navFromLoggedInHomePage : <button className="header__nav" onClick={onOpenNavBar}/>;
+  const navFromLoggedInAndSize = pathname === '/' ? navFromLoggedInHomePage : <button className="header__nav" onClick={onOpenNavBar}/>;
 
   return (
     <header className={styleHeader}>

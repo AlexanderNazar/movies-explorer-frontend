@@ -1,11 +1,15 @@
-import { Route, Switch, useLocation  } from 'react-router-dom';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Page404 from '../Page404/Page404';
 import NavBar from '../NavBar/NavBar';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import './App.css';
 import '../Form/Form.css';
@@ -15,116 +19,174 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 
+import mainApi from '../../utils/MainApi';
+
 function App() {
 
-  const location = useLocation();
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isValidName, setIsValidName] = useState(true);
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [isValidPassword, setIsValidPassword] = useState(true);
+  const history = useHistory();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [isOpenNavBar, setIsOpenNavBar] = useState(false);
+  const [resStatus, setResStatus] = useState('');
+  const [currentUser, setCurrentUser] = useState({});
 
-  function handleChangeName(evt) {
-    setName(evt.target.value);
-    setIsValidName(evt.target.validity.valid);
+  function setUserInfo() {
+    mainApi.getUserInfo()
+      .then(res => {
+        setCurrentUser(res.data);
+      })
+      .catch(err => console.log(err))
   }
 
-  function handleChangeEmail(evt) {
-    setEmail(evt.target.value);
-    setIsValidEmail(evt.target.validity.valid);
+  useEffect(() => {
+    const cookie = localStorage.getItem('hasCookie');
+    if (cookie) {
+      setUserInfo();
+    }
+  }, [])
+
+  function handleLogin({ email, password }) {
+    mainApi.login({ email, password })
+      .then(() => {
+        setIsLoggedIn(true);
+        setResStatus('');
+        setUserInfo();
+        localStorage.setItem('hasCookie', true);
+        history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        setResStatus(err);
+    })
   }
 
-  function handleChangePassword(evt) {
-    setPassword(evt.target.value);
-    setIsValidPassword(evt.target.validity.valid);
+  function handleRegistration({ name, email, password }) {
+    mainApi.registration({ name, email, password })
+      .then(() => {
+        handleLogin({ email, password });
+        setResStatus('');
+      })
+      .catch((err) => {
+        console.log(err);
+        setResStatus(err);
+    })
   }
 
-  function handleLoggedIn() {
-    setIsLoggedIn(!isLoggedIn);
+  function handleLogout() {
+    mainApi.logout()
+      .then(() => {
+        setIsLoggedIn(false);
+        localStorage.removeItem('hasCookie');
+      })
+      .catch(err => console.log(err))
   }
+
+  function tokenCheck() {
+    const cookie = localStorage.getItem('hasCookie');
+    if (cookie) {
+      mainApi.getUserInfo()
+        .then(() => {
+          setUserInfo();
+          setIsLoggedIn(true);
+          history.push('/');
+        })
+        .catch(() => localStorage.removeItem('hasCookie'));
+    }
+  }
+
+  function handleChangeUserInfo({ name, email }) {
+    mainApi.changeUserInfo({ name, email })
+      .then((res) => {
+        setResStatus(200);
+        setCurrentUser(res.data)
+      })
+      .catch(err => {
+        console.log(err);
+        setResStatus(err);
+      })
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, [isLoggedIn])
 
   function handleNavBar() {
     setIsOpenNavBar(!isOpenNavBar);
   }
 
-  useEffect(() => {
-    setName('');
-    setEmail('');
-    setPassword('');
-    setIsValidName(true);
-    setIsValidEmail(true);
-    setIsValidPassword(true);
-  }, [location]);
-
-
+  function handleResStatus() {
+    setResStatus('');
+  }
 
   return (
-    <div className="root">
-      <Switch>
-        <Route exact path='/' >
-          <Header
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="root">
+        <Switch>
+          <Route exact path='/' >
+            <Header
+              isLoggedIn={isLoggedIn}
+              onOpenNavBar={handleNavBar} />
+            <Main />
+            <Footer />
+          </Route>
+          <ProtectedRoute
+            path='/profile'
             isLoggedIn={isLoggedIn}
-            onOpenNavBar={handleNavBar} />
-          <Main />
-          <Footer />
-        </Route>
-        <Route path='/profile' >
-          <Header
+            children={(
+              <>
+                <Header
+                  isLoggedIn={isLoggedIn}
+                  onOpenNavBar={handleNavBar} />
+                <Profile
+                logout={handleLogout}
+                resStatus={resStatus}
+                setResStatus={handleResStatus}
+                onEditProfile={handleChangeUserInfo} />
+              </>
+            )} />
+          <ProtectedRoute
+            path='/movies'
             isLoggedIn={isLoggedIn}
-            onOpenNavBar={handleNavBar} />
-          <Profile onLoggedIn={handleLoggedIn} />
-        </Route>
-        <Route path='/movies' >
-          <Header
+            children={(
+              <>
+                <Header
+                  isLoggedIn={isLoggedIn}
+                  onOpenNavBar={handleNavBar} />
+                  <Movies />
+                <Footer />
+              </>
+            )} />
+          <ProtectedRoute
+            path='/saved-movies'
             isLoggedIn={isLoggedIn}
-            onOpenNavBar={handleNavBar} />
-            <Movies />
-          <Footer />
-        </Route>
-        <Route path='/saved-movies' >
-          <Header
-            isLoggedIn={isLoggedIn}
-            onOpenNavBar={handleNavBar} />
-            <SavedMovies />
-          <Footer />
-        </Route>
-        <Route path="/signup" >
-          <Register
-            name={name}
-            email={email}
-            password={password}
-            handleLoggedIn={handleLoggedIn}
-            handleChangeName={handleChangeName}
-            handleChangeEmail={handleChangeEmail}
-            handleChangePassword={handleChangePassword}
-            isValidName={isValidName}
-            isValidEmail={isValidEmail}
-            isValidPassword={isValidPassword} />
-        </Route>
-        <Route path="/signin">
-          <Login
-              email={email}
-              password={password}
-              handleLoggedIn={handleLoggedIn}
-              handleChangeEmail={handleChangeEmail}
-              handleChangePassword={handleChangePassword}
-              isValidEmail={isValidEmail}
-              isValidPassword={isValidPassword} />
-        </Route>
-        <Route path='*'>
-          <Page404 />
-        </Route>
-      </Switch>
-      <NavBar
-        isOpen={isOpenNavBar}
-        onClose={handleNavBar} />
-    </div>
+            children={(
+              <>
+                <Header
+                  isLoggedIn={isLoggedIn}
+                  onOpenNavBar={handleNavBar} />
+                  <SavedMovies />
+                <Footer />
+              </>
+            )} />
+          <Route path="/signup" >
+            <Register
+              onRegistration={handleRegistration}
+              resStatus={resStatus} />
+          </Route>
+          <Route path="/signin">
+            <Login
+              onLoggedIn={handleLogin}
+              resStatus={resStatus} />
+          </Route>
+          <Route path='*'>
+            <Page404 />
+          </Route>
+        </Switch>
+        <NavBar
+          isOpen={isOpenNavBar}
+          onClose={handleNavBar} />
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 
