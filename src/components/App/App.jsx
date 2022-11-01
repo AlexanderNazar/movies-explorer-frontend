@@ -167,6 +167,7 @@ function App() {
   function getMovies({ textSearch, isChecked }) {
     const filterCards = filterCard(cards, textSearch, isChecked);
     if (cards.length === 0 && textSearch) {
+      console.log(cards);
       setIsLoading(true);
       moviesApi.getMovies()
         .then((cards) => {
@@ -182,7 +183,7 @@ function App() {
           console.log(err);
         })
         .finally(() => setIsLoading(false))
-    }
+    }console.log(cards);
     setFoundCards(filterCards);
     handleRenderCards(filterCards);
     saveItemsInLocalStorage(textSearch, isChecked, filterCards);

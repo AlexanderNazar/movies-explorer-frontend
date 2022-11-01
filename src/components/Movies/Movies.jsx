@@ -42,7 +42,7 @@ function Movies({
     if (foundCardsLocalStorage) {
       renderedFoundCards(foundCardsLocalStorage);
       getSavedMovies();
-    } getSavedMovies();
+    }
   }, [amountRenderedCards])
 
   return (
