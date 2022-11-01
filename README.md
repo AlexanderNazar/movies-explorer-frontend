@@ -13,3 +13,4 @@
 * React.js
 
 1. [Ссылка на макет](https://disk.yandex.ru/d/kvyZdDgswRDiTw)
+2. [Ссылка на пул реквест](https://github.com/AlexanderNazar/movies-explorer-frontend/compare/main...level-3)

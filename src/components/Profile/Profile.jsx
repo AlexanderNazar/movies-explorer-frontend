@@ -19,6 +19,7 @@ function Profile({ logout, resStatus, setResStatus, onEditProfile }) {
     isValid,
     isValidForm,
     handleChange,
+    resetForm,
   } = useForm();
 
   function handleEditAccount() {
@@ -36,9 +37,12 @@ function Profile({ logout, resStatus, setResStatus, onEditProfile }) {
   }
 
   useEffect(() => {
-    setResStatus();
     setValues(currentUser);
   }, [])
+
+  useEffect(() => {
+    setResStatus('');
+  }, [onEdit])
 
   const validTextName = !isValid.name && "Введен недопустимый символ для имени";
   const validTextEmail = !isValid.email && "Здесь должен быть E-mail";
@@ -50,7 +54,7 @@ function Profile({ logout, resStatus, setResStatus, onEditProfile }) {
 
   const successfulText = resStatus === 200 && "Данные пользователя обновлены";
   const errorTextConflict = resStatus === 409 && "Пользователь с таким email уже существует";
-  const errorTextBadRequest = resStatus === 400 && "При регистрации пользователя произошла ошибка";
+  const errorTextBadRequest = resStatus === 400 && "При редактировании пользователя произошла ошибка";
   const errorTextInternalServer = resStatus === 500 && "На сервере произошла ошибка";
   const textResponse = errorTextConflict || errorTextInternalServer || successfulText || errorTextBadRequest;
 
@@ -68,7 +72,7 @@ return (
                 type="text"
                 name="name"
                 id="name"
-                value={values.name || ''}
+                value={values.name || currentUser.name || ''}
                 pattern="[a-zA-Zа-яёА-Я0-9\s\-]*"
                 required
                 onChange={handleChange}
@@ -81,7 +85,7 @@ return (
                 type="email"
                 name="email"
                 id="email"
-                value={values.email || ''}
+                value={values.email || currentUser.email || ''}
                 required
                 onChange={handleChange}
                 placeholder="E-mail" />
@@ -112,7 +116,7 @@ return (
                 type="text"
                 name="name"
                 id="name"
-                value={values.name || ''}
+                value={values.name || currentUser.name || ''}
                 placeholder="Имя"
                 disabled />
           </div>
@@ -123,7 +127,7 @@ return (
                 type="email"
                 name="email"
                 id="email"
-                value={values.email || ''}
+                value={values.email || currentUser.email || ''}
                 placeholder="E-mail"
                 disabled />
           </div>

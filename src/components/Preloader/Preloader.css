@@ -40,13 +40,15 @@
 }
 
 .preloader {
+  box-sizing: border-box;
+  min-height: 256px;
+  padding: 30px 14px 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
   z-index: 10;
-  padding: 20px;
 }
 
 .preloader__container {
@@ -85,4 +87,18 @@
   z-index: 10;
   background: #2BE080;
   animation: preloader-inside-green 1s ease-in-out infinite;
+}
+
+@media (min-width: 767px) {
+  .preloader {
+    min-height: 510px;
+    padding: 30px 30px 30px;
+  }
+}
+
+@media (min-width: 1023px) {
+  .preloader {
+    min-height: 210px;
+    padding: 30px 70px 30px;
+  }
 }

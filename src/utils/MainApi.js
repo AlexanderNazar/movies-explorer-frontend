@@ -56,6 +56,33 @@ class MainApi {
     })
     .then(this._handleResponse)
   }
+
+  getMyMovies() {
+    return fetch(this._baseUrl + `/movies`, {
+      headers: this._headers,
+      credentials: 'include',
+    })
+    .then(this._handleResponse)
+  }
+
+  saveMovie(inputValueOject) {
+    return fetch(this._baseUrl + `/movies`, {
+      method: 'POST',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify(inputValueOject)
+    })
+    .then(this._handleResponse)
+  }
+
+  deleteMovie(id) {
+    return fetch(this._baseUrl + `/movies/${id}`, {
+      method: 'DELETE',
+      headers: this._headers,
+      credentials: 'include',
+    })
+    .then(this._handleResponse)
+  }
 }
 
   const mainApi = new MainApi({

@@ -50,10 +50,15 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
+  transition: margin-right .1s linear;
 }
 
 .profile__input:focus {
   outline: none;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  margin-right: 5px;
 }
 
 .profile__input:disabled {
