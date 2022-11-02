@@ -139,7 +139,7 @@ function App() {
           setUserInfo();
           setIsLoggedIn(true);
         })
-        .catch(() => localStorage.removeItem('hasCookie'));
+        .catch(() => handleLogout());
     }
   }
 
