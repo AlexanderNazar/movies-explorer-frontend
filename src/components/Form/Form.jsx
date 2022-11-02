@@ -13,9 +13,12 @@ function Form({
     onSubmit,
     isValidForm,
     textError,
+    isLoading
   }) {
 
-  const classButton = isValidForm ? "form__button" : "form__button form__button_inactive";
+  const isValid = isLoading && isValidForm;
+
+  const classButton = isValid ? "form__button" : "form__button form__button_inactive";
 
   return (
     <>
@@ -30,7 +33,8 @@ function Form({
           type="submit"
           name="submit"
           className={classButton}
-          disabled={!isValidForm}>
+          disabled={!isValid}
+          onClick={isLoading}>
             {textButton}
         </button>
       </form>

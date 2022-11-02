@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import Form from '../Form/Form';
 import useForm from '../../hooks/useForm';
 
-function Login({ onLoggedIn, resStatus }) {
+function Login({ onLoggedIn, resStatus, isLoading }) {
 
   const {
     values,
@@ -13,9 +14,14 @@ function Login({ onLoggedIn, resStatus }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    resetForm();
     onLoggedIn(values);
   }
+
+  useEffect(() => {
+    return () => {
+      resetForm();
+    }
+  }, [])
 
   const validTextEmail = !isValid.email && "Здесь должен быть E-mail";
   const validTextPassword = !isValid.password && "Пароль должен быть не короче 8 символов";
@@ -37,6 +43,7 @@ function Login({ onLoggedIn, resStatus }) {
         isValidForm={isValidForm}
         textError={errorTextResponse}
         onSubmit={handleSubmit}
+        isLoading={isLoading}
         children={(
           <>
             <label htmlFor="email" className="form__input-label">E-mail</label>
@@ -48,7 +55,8 @@ function Login({ onLoggedIn, resStatus }) {
               value={values.email || ''}
               required
               placeholder="Email"
-              onChange={handleChange} />
+              onChange={handleChange}
+              disabled={!isLoading} />
             <span id="email-error" className="form__error">{validTextEmail}</span>
             <label htmlFor="password" className="form__input-label">Пароль</label>
             <input
@@ -60,7 +68,8 @@ function Login({ onLoggedIn, resStatus }) {
               required
               placeholder="Пароль"
               minLength="8"
-              onChange={handleChange} />
+              onChange={handleChange}
+              disabled={!isLoading} />
             <span id="password-error" className="form__error">{validTextPassword}</span>
           </>
         )}/>

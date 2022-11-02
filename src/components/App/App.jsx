@@ -92,6 +92,7 @@ function App() {
   }
 
   function handleLogin({ email, password }) {
+    setIsLoading(true);
     mainApi.login({ email, password })
       .then(() => {
         setIsLoggedIn(true);
@@ -103,10 +104,12 @@ function App() {
       .catch((err) => {
         console.log(err);
         setResStatus(err);
-    })
+      })
+      .finally(() => setIsLoading(false))
   }
 
   function handleRegistration({ name, email, password }) {
+    setIsLoading(true);
     mainApi.registration({ name, email, password })
       .then(() => {
         handleLogin({ email, password });
@@ -115,7 +118,8 @@ function App() {
       .catch((err) => {
         console.log(err);
         setResStatus(err);
-    })
+      })
+      .finally(() => setIsLoading(false))
   }
 
   function handleLogout() {
@@ -123,6 +127,7 @@ function App() {
       .then(() => {
         setIsLoggedIn(false);
         localStorage.clear();
+        setSavedMovies([])
       })
       .catch(err => console.log(err))
   }
@@ -167,7 +172,6 @@ function App() {
   function getMovies({ textSearch, isChecked }) {
     const filterCards = filterCard(cards, textSearch, isChecked);
     if (cards.length === 0 && textSearch) {
-      console.log(cards);
       setIsLoading(true);
       moviesApi.getMovies()
         .then((cards) => {
@@ -183,7 +187,7 @@ function App() {
           console.log(err);
         })
         .finally(() => setIsLoading(false))
-    }console.log(cards);
+    }
     setFoundCards(filterCards);
     handleRenderCards(filterCards);
     saveItemsInLocalStorage(textSearch, isChecked, filterCards);
@@ -193,17 +197,22 @@ function App() {
   function getSavedMovies() {
     if (savedMovies.length === 0) {
       setIsLoading(true);
-      mainApi.getMyMovies()
-        .then((cards) => {
-          setSavedMovies(cards.data);
-          setFoundFromSavedMovies(cards.data);
+      mainApi.getUserInfo()
+        .then(res => {
+          mainApi.getMyMovies()
+          .then((cards) => {
+            const mySaveMovies = cards.data.filter(i => i.owner === res.data._id)
+            setSavedMovies(mySaveMovies);
+            setFoundFromSavedMovies(mySaveMovies);
+          })
+          .catch(err => {
+            setResStatus(500);
+            console.log(err);
+          })
         })
-        .catch(err => {
-          setResStatus(500);
-          console.log(err);
-        })
+        .catch(err => console.log(err))
         .finally(() => setIsLoading(false))
-      }
+    }
   }
 
   function getFoundFromSavedMovies({ textSearch, isChecked }) {
@@ -347,7 +356,8 @@ function App() {
             children={(
               <Register
               onRegistration={handleRegistration}
-              resStatus={resStatus} />
+              resStatus={resStatus}
+              isLoading={!isLoading} />
             )} />
           <ProtectedRoute
             path='/signin'
@@ -355,7 +365,8 @@ function App() {
             children={(
               <Login
               onLoggedIn={handleLogin}
-              resStatus={resStatus} />
+              resStatus={resStatus}
+              isLoading={!isLoading} />
             )} />
           <Route path='*'>
             <Page404 />

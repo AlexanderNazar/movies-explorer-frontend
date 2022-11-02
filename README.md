@@ -14,4 +14,4 @@
 
 1. [Ссылка на макет](https://disk.yandex.ru/d/kvyZdDgswRDiTw)
 2. [Ссылка на пул реквест](https://github.com/AlexanderNazar/movies-explorer-frontend/pull/2)
-3. [Ссылка на пирложение](https://diploma-nazarov.nomoredomains.icu/)
+3. [Ссылка на приложение](https://diploma-nazarov.nomoredomains.icu/)

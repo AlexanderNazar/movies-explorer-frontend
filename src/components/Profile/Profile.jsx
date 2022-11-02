@@ -19,7 +19,6 @@ function Profile({ logout, resStatus, setResStatus, onEditProfile }) {
     isValid,
     isValidForm,
     handleChange,
-    resetForm,
   } = useForm();
 
   function handleEditAccount() {

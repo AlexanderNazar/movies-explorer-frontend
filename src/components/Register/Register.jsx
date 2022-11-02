@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import Form from '../Form/Form';
 import useForm from '../../hooks/useForm';
 
-function Register({ onRegistration, resStatus }) {
+function Register({ onRegistration, resStatus, isLoading }) {
 
   const {
     values,
@@ -13,9 +14,14 @@ function Register({ onRegistration, resStatus }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    resetForm();
     onRegistration(values);
   }
+
+  useEffect(() => {
+    return () => {
+      resetForm();
+    }
+  }, [])
 
   const validTextName = !isValid.name && "Введен недопустимый символ для имени";
   const validTextEmail = !isValid.email && "Здесь должен быть E-mail";
@@ -40,6 +46,7 @@ function Register({ onRegistration, resStatus }) {
         onSubmit={handleSubmit}
         textError={errorTextResponse}
         isValidForm={isValidForm}
+        isLoading={isLoading}
         children={(
           <>
             <label htmlFor="name" className="form__input-label">Имя</label>
@@ -52,7 +59,8 @@ function Register({ onRegistration, resStatus }) {
               pattern="[a-zA-Zа-яёА-Я0-9\s\-]*"
               required
               placeholder="Имя"
-              onChange={handleChange} />
+              onChange={handleChange}
+              disabled={!isLoading} />
             <span id="name-error" className="form__error">{validTextName}</span>
             <label htmlFor="email" className="form__input-label">E-mail</label>
             <input
@@ -63,7 +71,8 @@ function Register({ onRegistration, resStatus }) {
               value={values.email || ''}
               required
               placeholder="Email"
-              onChange={handleChange} />
+              onChange={handleChange}
+              disabled={!isLoading} />
             <span id="email-error" className="form__error">{validTextEmail}</span>
             <label htmlFor="password" className="form__input-label">Пароль</label>
             <input
@@ -75,7 +84,8 @@ function Register({ onRegistration, resStatus }) {
               required
               placeholder="Пароль"
               minLength="8"
-              onChange={handleChange} />
+              onChange={handleChange}
+              disabled={!isLoading} />
             <span id="password-error" className="form__error">{validTextPassword}</span>
           </>
         )} />

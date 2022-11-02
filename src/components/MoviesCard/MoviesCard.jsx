@@ -3,20 +3,12 @@ import './MoviesCard.css';
 import heart from '../../images/heart.svg';
 import heart_active from '../../images/heart-active.svg';
 import cross from '../../images/cross.svg';
-import { useState } from 'react';
 
 function MoviesCard({ img, name, duration, like, trailerLink, onLike, card }) {
 
   const { pathname } = useLocation();
 
-  const [inFocus, setInFocus] = useState(false);
-
   const isLikeActive = like ? heart_active : heart;
-  const imageLike = inFocus ? cross : heart_active;
-
-  function handleFocus() {
-    setInFocus(!inFocus);
-  }
 
   function handleCardLike() {
     onLike(card);
@@ -33,13 +25,8 @@ function MoviesCard({ img, name, duration, like, trailerLink, onLike, card }) {
             <img src={isLikeActive} alt="#" className="card__heart" />
           </button>
           :
-          <button
-            className="card__button"
-            type="button"
-            onClick={handleCardLike}
-            onMouseEnter={handleFocus}
-            onMouseLeave={handleFocus}>
-            <img src={imageLike} alt="#" className="card__heart" />
+          <button className="card__button" type="button" onClick={handleCardLike} >
+            <img src={cross} alt="#" className="card__heart" />
           </button>
         }
       <p className="card__duration">{duration}</p>
