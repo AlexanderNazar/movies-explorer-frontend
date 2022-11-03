@@ -91,6 +91,10 @@ function App() {
       .catch(err => console.log(err))
   }
 
+  function handleLoading() {
+    setIsLoading(false);
+  }
+
   function handleLogin({ email, password }) {
     setIsLoading(true);
     mainApi.login({ email, password })
@@ -104,8 +108,8 @@ function App() {
       .catch((err) => {
         console.log(err);
         setResStatus(err);
+        setIsLoading(false);
       })
-      .finally(() => setIsLoading(false))
   }
 
   function handleRegistration({ name, email, password }) {
@@ -118,8 +122,8 @@ function App() {
       .catch((err) => {
         console.log(err);
         setResStatus(err);
+        setIsLoading(false);
       })
-      .finally(() => setIsLoading(false))
   }
 
   function handleLogout() {
@@ -139,7 +143,11 @@ function App() {
           setUserInfo();
           setIsLoggedIn(true);
         })
-        .catch(() => handleLogout());
+        .catch(() => {
+          setIsLoggedIn(false);
+          localStorage.clear();
+          setSavedMovies([])
+        });
     }
   }
 
@@ -209,6 +217,7 @@ function App() {
             setResStatus(500);
             console.log(err);
           })
+          .finally(() => setIsLoading(false))
         })
         .catch(err => console.log(err))
         .finally(() => setIsLoading(false))
@@ -321,6 +330,7 @@ function App() {
                     renderedFoundCards={handleRenderCards}
                     amountRenderedCards={amountRenderedCards}
                     resStatus={resStatus}
+                    setIsLoading={handleLoading}
                     onLike={handleCardLike}
                     setResStatus={handleResStatus}
                     isVisibleButton={isVisibleButton}

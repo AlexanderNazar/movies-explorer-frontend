@@ -16,6 +16,7 @@ function Movies({
   resStatus,
   isVisibleButton,
   onLike,
+  setIsLoading,
   onRenderCard }) {
 
   const foundCardsLocalStorage = JSON.parse(localStorage.getItem('foundCards'));
@@ -42,7 +43,7 @@ function Movies({
     if (foundCardsLocalStorage) {
       renderedFoundCards(foundCardsLocalStorage);
       getSavedMovies();
-    }
+    } setIsLoading();
   }, [amountRenderedCards])
 
   return (
