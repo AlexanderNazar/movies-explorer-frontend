@@ -1,13 +1,13 @@
 import './Navigation.css';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import profile from '../../images/profile.svg';
 
 function Navigation() {
 
-  const { path } = useRouteMatch();
+  const { pathname } = useLocation();
 
-  const styleLink = path === '/' ? "nav__link" : "nav__link nav__link_black";
-  const styleAccountLink = path === '/' ? "nav__account-link" : "nav__account-link nav__account-link_black";
+  const styleLink = pathname === '/' ? "nav__link" : "nav__link nav__link_black";
+  const styleAccountLink = pathname === '/' ? "nav__account-link" : "nav__account-link nav__account-link_black";
 
   return (
     <nav className="nav">

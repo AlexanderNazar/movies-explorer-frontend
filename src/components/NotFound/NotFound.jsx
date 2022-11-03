@@ -1,10 +1,10 @@
 import './NotFound.css';
 
-function NotFound() {
+function NotFound({ text }) {
 
 return (
   <div className="not-found">
-    <h2 className="not-found__text">Ничего не найдено</h2>
+    <h2 className="not-found__text">{text}</h2>
   </div>
   );
 }
