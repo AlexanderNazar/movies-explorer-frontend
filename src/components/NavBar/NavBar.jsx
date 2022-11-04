@@ -8,10 +8,10 @@ const styleNavBar = isOpen ? "nav-bar nav-bar_opened" : "nav-bar";
 const styleOverlay = isOpen ? "nav-bar__overlay nav-bar__overlay_opened" : "nav-bar__overlay";
 
 return (
-  <div className={styleOverlay}>
-    <nav className={styleNavBar}>
+  <div className={styleOverlay} onClick={onClose} >
+    <nav className={styleNavBar} >
       <button type="button" className="nav-bar__close-button" onClick={onClose}></button>
-      <div className="nav-bar__container">
+      <div className="nav-bar__container" onClick={e => e.stopPropagation()}>
         <ul className="nav-bar__list">
           <li className="nav-bar__link-container">
             <NavLink
